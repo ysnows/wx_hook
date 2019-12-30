@@ -2,8 +2,8 @@
 
 buildscript {
     repositories {
-        jcenter { url "http://jcenter.bintray.com/" }
-        maven { url 'http://maven.aliyun.com/mvn/repository/' }
+        jcenter { url "https://jcenter.bintray.com/" }
+        maven { url 'https://maven.aliyun.com/mvn/repository/' }
         google()
     }
     dependencies {

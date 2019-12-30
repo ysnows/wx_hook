@@ -2,20 +2,20 @@ apply plugin: 'com.android.application'
 
 android {
 
-    signingConfigs {
-        debug {
-            storeFile file("keystore/debug.keystore")
-            storePassword "firesun"
-            keyAlias "firesun"
-            keyPassword "firesun"
-        }
-        release {
-            storeFile file("keystore/release.keystore")
-            storePassword "firesun"
-            keyAlias "firesun"
-            keyPassword "firesun"
-        }
-    }
+//    signingConfigs {
+//        debug {
+//            storeFile file("keystore/debug.keystore")
+//            storePassword "firesun"
+//            keyAlias "firesun"
+//            keyPassword "firesun"
+//        }
+//        release {
+//            storeFile file("keystore/release.keystore")
+//            storePassword "firesun"
+//            keyAlias "firesun"
+//            keyPassword "firesun"
+//        }
+//    }
 
     compileSdkVersion 23
     buildToolsVersion "27.0.3"
@@ -29,7 +29,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
