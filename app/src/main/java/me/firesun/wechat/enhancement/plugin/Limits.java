@@ -46,7 +46,7 @@ public class Limits implements IPlugin {
                             return;
                         }
                         int oldLimit = intent.getIntExtra("max_select_count", 9);
-                        int newLimit = 1000;
+                        int newLimit = 3000;
                         if (oldLimit <= 9) {
                             intent.putExtra("max_select_count", oldLimit + newLimit - 9);
                         }
