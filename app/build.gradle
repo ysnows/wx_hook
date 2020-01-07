@@ -43,5 +43,6 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:23.1.1'
     implementation 'net.dongliu:apk-parser:2.4.2'
     implementation 'com.google.code.gson:gson:2.8.2'
+    api project(path: ':hotxposed')
 }
 

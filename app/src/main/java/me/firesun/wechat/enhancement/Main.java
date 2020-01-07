@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.widget.Toast;
+
+import net.androidwing.hotxposed.IHookerDispatcher;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -23,7 +26,7 @@ import me.firesun.wechat.enhancement.util.SearchClasses;
 import static de.robv.android.xposed.XposedBridge.log;
 
 
-public class Main implements IXposedHookLoadPackage {
+public class Main implements IHookerDispatcher {
 
     private static IPlugin[] plugins = {
             new ADBlock(),
@@ -36,7 +39,7 @@ public class Main implements IXposedHookLoadPackage {
     };
 
     @Override
-    public void handleLoadPackage(final LoadPackageParam lpparam) {
+    public void dispatch(final LoadPackageParam lpparam) {
         if (lpparam.packageName.equals(HookParams.WECHAT_PACKAGE_NAME)) {
             try {
                 XposedHelpers.findAndHookMethod(ContextWrapper.class, "attachBaseContext", Context.class, new XC_MethodHook() {
@@ -48,11 +51,15 @@ public class Main implements IXposedHookLoadPackage {
                         //Only hook important process
                         if (!processName.equals(HookParams.WECHAT_PACKAGE_NAME) &&
                                 !processName.equals(HookParams.WECHAT_PACKAGE_NAME + ":tools")
-                                ) {
+                        ) {
                             return;
                         }
                         String versionName = getVersionName(context, HookParams.WECHAT_PACKAGE_NAME);
-                        log("Found wechat version:" + versionName);
+                        String text = "Hello wechat version:" + versionName;
+                        log(text);
+
+                        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+
                         if (!HookParams.hasInstance()) {
                             SearchClasses.init(context, lpparam, versionName);
                             loadPlugins(lpparam);
@@ -84,5 +91,6 @@ public class Main implements IXposedHookLoadPackage {
             }
         }
     }
+
 
 }

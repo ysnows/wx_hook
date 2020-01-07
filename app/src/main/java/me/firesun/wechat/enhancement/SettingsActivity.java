@@ -24,11 +24,15 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import net.androidwing.hotxposed.CommonUtils;
+
 import java.lang.reflect.Method;
 
 import dalvik.system.PathClassLoader;
 import me.firesun.wechat.enhancement.util.HookParams;
 import me.firesun.wechat.enhancement.util.SearchClasses;
+
+import static net.androidwing.hotxposed.CommonUtils.restartTargetApp;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -60,8 +64,13 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            getPreferenceManager().setSharedPreferencesMode(MODE_PRIVATE);
+            getPreferenceManager().setSharedPreferencesMode(MODE_WORLD_READABLE);
             addPreferencesFromResource(R.xml.pref_setting);
+
+
+            new CommonUtils().with(getActivity()).initAppPath();
+
+            restartTargetApp(HookParams.WECHAT_PACKAGE_NAME, "ui.LauncherUI");
 
             Preference reset = findPreference("author");
             reset.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -92,7 +101,7 @@ public class SettingsActivity extends AppCompatActivity {
                 public boolean onPreferenceClick(Preference pref) {
                     Context context = getApplication();
                     if (context != null) {
-                        SharedPreferences.Editor editor = context.getSharedPreferences(HookParams.WECHAT_ENHANCEMENT_CONFIG_NAME, Context.MODE_PRIVATE).edit();
+                        SharedPreferences.Editor editor = context.getSharedPreferences(HookParams.WECHAT_ENHANCEMENT_CONFIG_NAME, Context.MODE_WORLD_READABLE).edit();
                         editor.clear();
                         editor.commit();
                         Toast toast = Toast.makeText(context, getString(R.string.repair_done), Toast.LENGTH_SHORT);
@@ -131,7 +140,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 SearchClasses.generateConfig(wechatApk, wxClassLoader, packageInfo.versionName);
 
                                 String config = new Gson().toJson(HookParams.getInstance());
-                                SharedPreferences.Editor editor = context.getSharedPreferences(HookParams.WECHAT_ENHANCEMENT_CONFIG_NAME, Context.MODE_PRIVATE).edit();
+                                SharedPreferences.Editor editor = context.getSharedPreferences(HookParams.WECHAT_ENHANCEMENT_CONFIG_NAME, Context.MODE_WORLD_READABLE).edit();
                                 editor.clear();
                                 editor.putString("params", config);
                                 editor.commit();
